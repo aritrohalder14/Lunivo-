@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", sans-serif;
+  
+  --color-gold: #D4AF37;
+  --color-gold-light: #F4D03F;
+  --color-gold-dark: #996515;
+  --color-navy: #0A192F;
+  --color-rich-black: #050505;
+
+  --animate-ticker: ticker 30s linear infinite;
+
+  @keyframes ticker {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+}
+
+@layer base {
+  body {
+    @apply bg-rich-black text-white antialiased selection:bg-gold selection:text-rich-black;
+    font-feature-settings: "cv02", "cv03", "cv04", "ss01";
+  }
+}
+
+@layer utilities {
+  .text-luxury-gradient {
+    @apply bg-gradient-to-r from-gold via-gold-light to-gold-dark bg-clip-text text-transparent;
+  }
+  
+  .border-luxury {
+    @apply border border-white/10 hover:border-gold/50 transition-colors duration-500;
+  }
+
+  .glass-morph {
+    @apply bg-white/5 backdrop-blur-xl border border-white/10;
+  }
+
+  .glow-gold {
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+  }
+
+  .ticker-wrap {
+    @apply overflow-hidden whitespace-nowrap flex;
+  }
+
+  .ticker-content {
+    @apply flex animate-ticker;
+  }
+}
+
+/* Custom transitions */
+.page-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.page-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}

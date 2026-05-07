@@ -1,0 +1,133 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile and settings",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "displayName": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "role": { "type": "string", "enum": ["customer", "admin"] },
+        "phoneNumber": { "type": "string" },
+        "address": { "type": "string" },
+        "wishlist": { 
+          "type": "array",
+          "items": { "type": "integer" }
+        },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "role"]
+    },
+    "Product": {
+      "title": "Product",
+      "description": "Football jersey details",
+      "type": "object",
+      "properties": {
+        "id": { "type": "integer" },
+        "title": { "type": "string" },
+        "category": { "type": "string" },
+        "player": { "type": "string" },
+        "team": { "type": "string" },
+        "price": { "type": "number" },
+        "image": { "type": "string" },
+        "description": { "type": "string" },
+        "sizes": { 
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "stock": { 
+          "type": "object",
+          "additionalProperties": { "type": "integer" }
+        },
+        "isFeatured": { "type": "boolean" },
+        "isActive": { "type": "boolean" }
+      },
+      "required": ["id", "title", "price", "category"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "Customer purchase history",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "productId": { "type": "integer" },
+              "quantity": { "type": "integer" },
+              "size": { "type": "string" },
+              "price": { "type": "number" }
+            }
+          }
+        },
+        "totalAmount": { "type": "number" },
+        "status": { "type": "string", "enum": ["pending", "processing", "shipped", "delivered", "cancelled"] },
+        "shippingAddress": { "type": "string" },
+        "phone": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "items", "totalAmount", "status"]
+    },
+    "Review": {
+      "title": "Review",
+      "description": "Customer ratings and comments",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "productId": { "type": "integer" },
+        "userId": { "type": "string" },
+        "userName": { "type": "string" },
+        "rating": { "type": "integer", "minimum": 1, "maximum": 5 },
+        "comment": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["productId", "userId", "rating", "comment"]
+    },
+    "Coupon": {
+      "title": "Coupon",
+      "description": "Discount codes",
+      "type": "object",
+      "properties": {
+        "code": { "type": "string" },
+        "discountType": { "type": "string", "enum": ["percentage", "fixed"] },
+        "value": { "type": "number" },
+        "expiryDate": { "type": "string", "format": "date-time" },
+        "isActive": { "type": "boolean" }
+      },
+      "required": ["code", "discountType", "value"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profiles"
+    },
+    "/products/{productId}": {
+      "schema": "Product",
+      "description": "JERSEY catalog"
+    },
+    "/orders/{orderId}": {
+      "schema": "Order",
+      "description": "Customer orders"
+    },
+    "/reviews/{reviewId}": {
+      "schema": "Review",
+      "description": "Product reviews"
+    },
+    "/coupons/{couponId}": {
+      "schema": "Coupon",
+      "description": "Marketing discounts"
+    },
+    "/admins/{adminId}": {
+      "schema": { "type": "object", "properties": { "role": { "type": "string" } } },
+      "description": "Administrative records"
+    }
+  }
+}
